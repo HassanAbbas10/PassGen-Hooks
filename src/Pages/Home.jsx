@@ -1,9 +1,22 @@
-import React, { useCallback } from "react";
+import React, { useCallback,useRef } from "react";
 const Home = () => {
   const [password, setPassword] = React.useState("");
   const [length, setLength] = React.useState(6);
   const [numAllowed, setNumAllowed] = React.useState(false);
   const [charAllowed, setCharAllowed] = React.useState(false);
+  const PasswrdRef = useRef(null);
+  let maxvalue = 20;
+const PassCopyToClip = useCallback (()=>{
+
+  window.navigator.clipboard.writeText(password);
+  PasswrdRef.current?.select();
+  PasswrdRef.current?.setSelectionRange(0,maxvalue)
+
+},[password])
+
+
+
+
 
   const PassWordGenerator = useCallback(() => {
 
@@ -40,8 +53,11 @@ React.useEffect(()=>{
           <div className="flex justify-center items-center pt-6 gap-x-4">
             <input className="p-2 px-4 w-[25rem] border-2 border-indigo-600 rounded-lg"
             value={password}
+            ref={PasswrdRef}
             />
-            <button className="p-2 px-6 hover:bg-orange-400 hover:text-white transition duration delay-300 bg-violet-300 border-2 italic uppercase font-mono text-red-600 border-slate-400 rounded-lg">
+            <button 
+            onClick={PassCopyToClip}
+            className="p-2 px-6 hover:bg-orange-400 hover:text-white transition duration delay-300 bg-violet-300 border-2 italic uppercase font-mono text-red-600 border-slate-400 rounded-lg">
               Copy
             </button>
           </div>
@@ -53,7 +69,7 @@ React.useEffect(()=>{
                 className="cursor-pointer bg-blue outline-none"
                 value={length}
                 min={6}
-                max={100}
+                max={maxvalue}
                 onChange={(e) => {
                   setLength(e.target.value);
                 }}
